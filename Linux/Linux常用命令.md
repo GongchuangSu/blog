@@ -103,30 +103,31 @@ ls -Slrh
 - 说明
 
   - 按文件大小排序
-  
-  ```shell
+
+```shell
   $ ls -Slh
-total 5.4G
--rw-r--r-- 1 Administrator 197121 2.8G 七月 11  2017 'Flash Builder.rar'
--rwxr-xr-x 1 Administrator 197121 532M 七月  9  2018  ideaIU-2018.1.5.exe*
--rw-r--r-- 1 Administrator 197121 420M 十月 10  2017 'IntelliJ IDEA.rar'
--rwxr-xr-x 1 Administrator 197121 412M 十一 27  2017  wampserver3.1.0_x64.exe*
--rwxr-xr-x 1 Administrator 197121 206M 十二  5  2017  jdk-8u151-windows-x64.exe*
--rw-r--r-- 1 Administrator 197121 171M 十月 13  2017  flex_sdk_4.1.0.16076A.zip
--rw-r--r-- 1 Administrator 197121 159M 十一 27  2017  PhpStorm-10.0.3.zip
-  ```
+  total 5.4G
+  -rw-r--r-- 1 Administrator 197121 2.8G 七月 11  2017 'Flash Builder.rar'
+  -rwxr-xr-x 1 Administrator 197121 532M 七月  9  2018  ideaIU-2018.1.5.exe*
+  -rw-r--r-- 1 Administrator 197121 420M 十月 10  2017 'IntelliJ IDEA.rar'
+  -rwxr-xr-x 1 Administrator 197121 412M 十一 27  2017  wampserver3.1.0_x64.exe*
+  -rwxr-xr-x 1 Administrator 197121 206M 十二  5  2017  jdk-8u151-windows-x64.exe*
+  -rw-r--r-- 1 Administrator 197121 171M 十月 13  2017  flex_sdk_4.1.0.16076A.zip
+  -rw-r--r-- 1 Administrator 197121 159M 十一 27  2017  PhpStorm-10.0.3.zip
+```
 
 ### 文件夹大小排序
 
 - 命令
 
-```
+```shell
 du -s * | sort -nr
 ```
 
 - 说明
   - 按文件夹大小排序
-  ```
+
+```shell
   $ du -s * | sort -nr
   2891858 Flash Builder
   2204748 Oracle Datebase 11g Release 2
@@ -136,6 +137,6 @@ du -s * | sort -nr
   187129  WebStorm
   162389  PhpStorm-10.0.3
   149365  apache-tomcat-7.0.64
-  ```
+```
 
   
