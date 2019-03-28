@@ -38,6 +38,11 @@ git checkout --track origin/branchName
 > 注意：'-- file'中间的空格  
 > [Git：解决head detached at xxxx](http://www.garinzhang.com/coding/55.html)
 
+### 对指定文件恢复到指定commit
+```git
+git checkout <hash> <filename>
+```
+
 ### 撤销提交到暂存区(unstage)
 ```
 git reset HEAD file
