@@ -24,6 +24,28 @@ select table_name,table_rows from information_schema.tables
 where 1=1
 order by table_rows desc;
 ```
+
+## 查看数据库表占用空间情况
+```sql
+SELECT
+	TABLE_NAME,
+	CONCAT( ROUND( ( DATA_LENGTH + INDEX_LENGTH ) / 1024 / 1024, 2 ), 'MB' ),
+	TABLE_ROWS 
+FROM
+	information_schema.TABLES 
+WHERE
+	TABLE_SCHEMA = '数据库名' 
+ORDER BY
+	DATA_LENGTH + INDEX_LENGTH DESC;
+```
+> 说明：
+- TABLE_SCHEMA : 数据库名
+- TABLE_NAME：表名
+- ENGINE：所使用的存储引擎
+- TABLES_ROWS：记录数
+- DATA_LENGTH：数据大小
+- INDEX_LENGTH：索引大小
+
 ## 查看表字段
 ```
 select * from information_schema.columns where table_schema = 'cgdb' and table_name = 'to_his_rec'
