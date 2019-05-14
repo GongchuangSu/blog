@@ -104,7 +104,9 @@ docker run -d -p 6379:6379 --name sgc-redis --restart always  redis:3.2
 
 ## Dockerfile for Tomcat
 
-### 定义Dockerfile
+### 多媒体服务
+
+#### 定义Dockerfile
 
 ```shell
 # docker file for HttpFileServer from supersu
@@ -137,7 +139,7 @@ RUN tar -zxf $WORK_PATH/MediaRoot.tar.gz \
     && rm $WORK_PATH/MediaRoot.tar.gz
 EXPOSE 8089
 ```
-### 制作镜像
+#### 制作镜像
 ```shell
 docker build -t supersu/media-tomcat:v0.1 .
 docker run --name mediaServer -it -p 8089:8089 supersu/media-tomcat:v0.1 /bin/bash
