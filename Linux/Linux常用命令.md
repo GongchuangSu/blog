@@ -44,7 +44,25 @@ ps -ef | grep tomcat
 
 ![ps-ef-ssh](./assets/ps-ef-ssh.png)
 
+## 查询网络端口占用情况
 
+### 方式一：lsof命令（推荐）
+
+```shell
+lsof -i:9000
+```
+
+> 通过list open file命令可以查看到当前打开文件，在linux中所有事物都是以文件形式存在，包括网络连接及硬件设备。
+
+![image-20190514133103605](./assets/image-20190514133103605.png)
+
+### 方式二：netstat命令
+
+```shell
+netstat -an | grep 9000
+```
+
+![image-20190514133221549](./assets/image-20190514133221549.png)
 
 ## 查看文件列表
 
@@ -140,3 +158,10 @@ du -s * | sort -nr
 ```
 
   
+
+### awk拼接字符串
+
+```shell
+cat tcdutygrid.text | awk -F, '{print $1,$4,$5}' | sed 's/"//g' | awk -F" " '{print "INSERT INTO `46_kq_duty_grid`(`UnitID`, `DutyGridID`, `DutyGridName`, `DutyGridCode`) VALUES (9," $1",'\''"$2"'\'','\''"$3"'\'')"};'
+```
+
