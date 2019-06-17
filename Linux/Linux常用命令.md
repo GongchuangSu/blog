@@ -157,11 +157,24 @@ du -s * | sort -nr
   149365  apache-tomcat-7.0.64
 ```
 
-  
-
 ### awk拼接字符串
 
 ```shell
 cat tcdutygrid.text | awk -F, '{print $1,$4,$5}' | sed 's/"//g' | awk -F" " '{print "INSERT INTO `46_kq_duty_grid`(`UnitID`, `DutyGridID`, `DutyGridName`, `DutyGridCode`) VALUES (9," $1",'\''"$2"'\'','\''"$3"'\'')"};'
 ```
+
+## Shell内建命令
+
+### 显示指定命令类型
+
+- 命令
+
+```shell
+$ type -a grep
+grep is /bin/grep
+```
+
+- 说明
+  - 命令类型：file-文件、内部命令；alias-命令别名；builtin-内部命令
+  - `-a`：在环境变量“PATH”指定的路径中，显示给定指令的信息，包括命令别名。
 
