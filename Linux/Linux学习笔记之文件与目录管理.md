@@ -35,6 +35,8 @@
 -a：连同文件属性一同复制，相当于-pdr
 -i：覆盖既有文件之前先询问用户
 -r：递归处理，将指定目录下的所有文件与子目录一并处理
+-v：详细显示命令执行的操作
+-p：保留源文件或目录的属性
 
 [root@cg102 ~]# rm [-fir] 文件或目录
 参数：
@@ -66,4 +68,49 @@ network
 - `less`：与`more`类似，但比`more`更好用，可以往前翻页
 - `head`：只看头几行
 - `tail`：只看结尾几行
+  - 常用参数`-f`文件内容更新后，显示信息同步更新
 - `od`：以二进制的方式读取文件内容
+- `wc`：统计文件内容信息
+  - `-l`：只显示列数
+  - `-w`：只显示字数
+
+## 通配符
+
+- 定义：`shell`内建的符号
+- 用途：操作多个相似（有简单规律）的文件
+- 常用通配符
+  - `*`：匹配任何字符串
+  - `?`：匹配1个字符串
+  - `[xyz]`：匹配xyz任意一个字符
+  - `[a-z]`：匹配一个范围
+  - `[!xyz]`或`[^xyz]`：不匹配
+
+## tar命令用法
+
+**tar命令**可以为linux的文件和目录创建档案，常用于文件的压缩和解压。
+
+```shell
+## 打包
+[root@localhost ~]# tar -cf /tmp/etc-backup.tar /etc
+## 打包并使用gzip压缩
+[root@localhost ~]# tar -zcf /tmp/etc-backup.tar.gz /etc
+## 打包并使用bzip2压缩
+[root@localhost ~]# tar -jcf /tmp/etc-backup.tar.bzip2 /etc
+
+## 解包
+[root@localhost ~]# tar -xf /tmp/etc-backup.tar -C /temp/
+## 使用gzip解压
+[root@localhost ~]# tar -zxf /tmp/etc-backup.tar -C /temp/
+## 使用bzip2解压
+[root@localhost ~]# tar -jxf /tmp/etc-backup.tar -C /temp/
+```
+
+参数说明：
+
+- `c`：建立新的备份文件（打包）
+- `x`：从备份文件中还原文件（解包）
+- `f`：指定备份文件
+- `t`：列出备份文件里的内容（查看）
+- `z`：通过gzip指令处理备份文件
+- `j`：通过bzip2指令处理备份文件
+
