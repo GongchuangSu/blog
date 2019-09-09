@@ -26,7 +26,11 @@ docker stop container_name/container_id
 docker restart container_name/container_id
 ```
 
+- 搜索镜像
 
+```
+docker search httpd
+```
 
 - 查看镜像
 ```shell
@@ -74,14 +78,33 @@ Step 3/3 : COPY jpress.war /usr/local/tomcat/webapps
 Successfully built d6d73534106d
 Successfully tagged jpress:latest
 ```
+- 查看日志
+
+```shell
+docker logs container_name/container_id -f
+```
+
 - 运行镜像并指定端口
 ```shell
 docker run -d -p 8888:8080 jpress
 ```
+
+- 查看容器IP
+
+```shell
+docker inspect 容器ID | grep IPAddress 
+```
+
 - 进入容器
 ```shell
 docker exec -it df3db18d4f64 bash
 ```
+
+- 退出容器
+```shell
+exit
+```
+
 
 ## 安装Portainer
 
@@ -92,15 +115,46 @@ $ docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docke
 
 ## 安装Mysql
 
+### Mysql 5.7
+
 ```shell
 docker run --name sgc-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=egova -d mysql:5.7 --character-set-server=utf8  --collation-server=utf8_general_ci --lower_case_table_names=1
+```
+
+### Mysql 8.0
+
+```shell
+docker run --name sgc-mysql-8.0 -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=egova -e TZ="Asia/Shanghai" --restart always mysql:8.0 --lower_case_table_names=1
+```
+
+### 时区设置问题
+
+```shell
+set time_zone='+08:00'; 
+set global time_zone='+08:00';
+# my.cnf文件配置以下内容
+[mysqld]
+...
+default-time_zone='+8:00'
+...
 ```
 
 ## 安装Redis
 
 ```shell
-docker run -d -p 6379:6379 --name sgc-redis --restart always  redis:3.2
+docker run -d -p 6379:6379 -e TZ="Asia/Shanghai" --name sgc-redis --restart always  redis:3.2
 ```
+
+## 安装Cetus
+
+```shell
+# 拉取镜像
+docker pull ledetech/cetus 
+# 运行
+docker run -d -P -it -p 3309:3309 --name sgc-cetus --restart always ledetech/cetus
+```
+
+
 
 ## Dockerfile for Tomcat
 
@@ -143,5 +197,20 @@ EXPOSE 8089
 ```shell
 docker build -t supersu/media-tomcat:v0.1 .
 docker run --name mediaServer -it -p 8089:8089 supersu/media-tomcat:v0.1 /bin/bash
+```
+
+# 容器中安装Vim
+
+```shell
+
+mv /etc/apt/sources.list /etc/apt/sources.list.bak
+    echo "deb http://mirrors.163.com/debian/ jessie main non-free contrib" >/etc/apt/sources.list
+    echo "deb http://mirrors.163.com/debian/ jessie-proposed-updates main non-free contrib" >>/etc/apt/sources.list
+    echo "deb-src http://mirrors.163.com/debian/ jessie main non-free contrib" >>/etc/apt/sources.list
+    echo "deb-src http://mirrors.163.com/debian/ jessie-proposed-updates main non-free contrib" >>/etc/apt/sources.list
+    #更新安装源
+    apt-get update
+    
+apt-get install -y vim
 ```
 

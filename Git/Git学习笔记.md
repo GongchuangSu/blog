@@ -79,7 +79,7 @@ git stash pop
 git stash drop stash@{0}
 -- 应用指定存储
 git stash apply stash@{2}
--- 查看指定存储内容
+-- 查看指定存储内容修改情况
 git stash show -p stash@{1}
 ```
 
@@ -87,3 +87,4 @@ git stash show -p stash@{1}
 1. [git rebase 和 git merge 的区别](https://www.jianshu.com/p/f23f72251abc)
 
 2. [Git 分支- 分支的衍合](https://git-scm.com/book/zh-tw/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E8%A1%8D%E5%90%88)
+
