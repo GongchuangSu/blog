@@ -184,6 +184,16 @@ possible_keys: idx_rec_task_num
 * 错误日志
   * 查看show variables like "%log_error%"
 
+- 日志记录查询/执行过的SQL语句
+
+  - 查看日志功能是否开启：`show variables like 'general%';`
+
+    ![image-20200120140856123](./assets/image-20200120140856123.png)
+
+  - 开启日志功能：`set global general_log = 'ON';`
+
+    ![image-20200120141101400](./assets/image-20200120141101400.png)
+
 
 # 监控工具
 ## doDBA
