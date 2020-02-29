@@ -291,6 +291,189 @@ zset 还可以用来存储学生的成绩，value 值是学生的 ID，score 是
 
 ```
 
+## 其他高级命令
+### keys
+
+> **全量遍历键**，用来列出所有满足特定正则字符串规则的key，当redis数据量比较大时，性能比较差，要避免使用**全量遍历键**，用来列出所有满足特定正则字符串规则的key，当redis数据量比较大时，性能比较差，要避免使用
+
+```shell
+127.0.0.1:6379> keys *
+1) "books"
+2) "names"
+```
+
+### scan
+
+> **scan：渐进式遍历键，**scan 参数提供了三个参数，第一个是 cursor 整数值，第二个是 key 的正则模式，第三个是遍历的 limit hint。第一次遍历时，cursor 值为 0，然后将返回结果中第一个整数值作为下一次遍历的 cursor。一直遍历到返回的 cursor 值为 0 时结束。
+
+```shell
+127.0.0.1:6379> keys name*
+ 1) "name1"
+ 2) "name9"
+ 3) "name6"
+ 4) "name8"
+ 5) "name10"
+ 6) "name5"
+ 7) "name3"
+ 8) "name7"
+ 9) "names"
+10) "name2"
+11) "name4"
+127.0.0.1:6379> scan 0 match name* count 5
+1) "10"
+2) 1) "name1"
+   2) "name8"
+   3) "names"
+   4) "name9"
+127.0.0.1:6379> scan 10 match name* count 5
+1) "15"
+2) 1) "name10"
+   2) "name3"
+   3) "name7"
+   4) "name6"
+   5) "name5"
+127.0.0.1:6379> scan 15 match name* count 5
+1) "0"
+2) 1) "name2"
+   2) "name4"
+```
+
+### info
+
+> 查看redis服务运行信息，分为 9 大块，每个块都有非常多的参数，这 9 个块分别是: 
+>
+> Server：服务器运行的环境参数 
+>
+> Clients：客户端相关信息 
+>
+> Memory：服务器运行内存统计数据 
+>
+> Persistence：持久化信息 
+>
+> Stats：通用统计数据 
+>
+> Replication：主从复制相关信息 
+>
+> CPU CPU：使用情况 
+>
+> Cluster：集群信息 
+>
+> KeySpace：键值对统计数量信息
+
+```shell
+127.0.0.1:6379> info
+# Server
+redis_version:3.2.12		# Redis版本
+redis_git_sha1:00000000	# git上版本
+redis_git_dirty:0				# git的代码是否修改
+redis_build_id:7897e7d0e13773f				# 编译时ID
+redis_mode:standalone									# redis运行模式
+os:Linux 3.10.0-862.el7.x86_64 x86_64	# 所运行操作系统内核
+arch_bits:64						# 64架构
+multiplexing_api:epoll	# Redis基于epoll模型
+gcc_version:4.8.5				# gcc版本
+process_id:10855				# 进程PID
+run_id:d7890df4417cf1238711510a27adc3e285322127	# Redis的随机标识符（用于sentinel和集群）
+tcp_port:6379						# Redis端口
+uptime_in_seconds:1427	# Redis运行时长的秒数
+uptime_in_days:0				# Redis运行的天数
+hz:10										# 时间事件，单位为赫兹，每10毫秒循环一次
+lru_clock:5838964				# 以分钟为单位的自增时钟，用于LRU管理maxmemory-policy内存回收策略
+executable:/usr/bin/redis-server	# 可执行文件位置
+config_file:/etc/redis.conf				# 配置文件位置
+
+# Clients
+connected_clients:1						# 已连接客户端的数量（不包括通过从属服务器连接的客户端）
+client_longest_output_list:0	# 所有客户端连接中，最长的输出列表，Redis输出缓存峰值
+client_biggest_input_buf:0		# 所有客户端连接中，最大输入缓存，Redis输入缓存峰值
+blocked_clients:0							# 正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量
+
+# Memory
+used_memory:813280								# 由Redis分配的内存的总量，字节数
+used_memory_human:794.22K					# 同上，单位K
+used_memory_rss:6053888						# Redis进程从OS角度分配的物理内存，如key被删除后，malloc不一定把内存归还给OS，但可以Redis进程复用，代表Redis使用的总内存，字节数
+used_memory_rss_human:5.77M				# 同上，单位M
+used_memory_peak:813416						# Redis使用内存的峰值，字节数
+used_memory_peak_human:794.35K		# 同上，单位K
+total_system_memory:1039880192
+total_system_memory_human:991.71M
+used_memory_lua:37888							# lua引擎使用的内存总量，字节数
+used_memory_lua_human:37.00K			# 同上，单位K
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+mem_fragmentation_ratio:7.44			
+mem_allocator:jemalloc-3.6.0			# Redis内存管理器
+
+# Persistence
+loading:0	# 标识位，是否在载入数据文件，0代表没有，1代表正在载入
+rdb_changes_since_last_save:0		# 从最近一次dump快照后，未被dump的变更次数	
+rdb_bgsave_in_progress:0				# 标识位，记录当前是否在创建RDB快照
+rdb_last_save_time:1582897043		# 最近一次创建RDB快照文件的Unix时间戳
+rdb_last_bgsave_status:ok				# 标识位，记录最近一次bgsave操作是否创建成功
+rdb_last_bgsave_time_sec:0			# 最近一次bgsave操作耗时秒数
+rdb_current_bgsave_time_sec:-1	# 当前bgsave执行耗时秒数（-1表示还未执行）
+aof_enabled:1										# appendonly是否开启
+aof_rewrite_in_progress:0				# AOF重写是否正在进行
+aof_rewrite_scheduled:0					# AOF重写是否被RDB save操作阻塞等待
+aof_last_rewrite_time_sec:-1		# 最近一次AOF重写操作耗时
+aof_current_rewrite_time_sec:-1	# 当前AOF重写持续的耗时
+aof_last_bgrewrite_status:ok		# 最近一次AOF重写操作是否成功
+aof_last_write_status:ok				# 最近一次AOF写入操作是否成功
+aof_current_size:525						# AOF文件目前的大小，字节数
+aof_base_size:0									# 服务器启动时或者AOF重写最近一次执行之后，AOF文件的大小
+aof_pending_rewrite:0						# 是否有AOF重写操作在等待RDB文件创建完毕之后执行
+aof_buffer_length:0							# AOF缓冲区的大小
+aof_rewrite_buffer_length:0			# AOF重写缓冲区的大小
+aof_pending_bio_fsync:0					# 后台I/O队列里面，等待执行的fsync调用数量
+aof_delayed_fsync:0							# 被延迟的fsync调用数量
+
+# Stats
+total_connections_received:1		# 服务器已接受的连接请求数量
+total_commands_processed:28			# 服务器已执行的命令数量
+instantaneous_ops_per_sec:0			# 服务器每秒执行的命令数量
+total_net_input_bytes:1045			# Redis每秒网络输入的字节数
+total_net_output_bytes:10583		# Redis每秒网络输出的字节数
+instantaneous_input_kbps:0.00		# 瞬间的Redis输入网络流量（kbps）
+instantaneous_output_kbps:0.00  # 瞬间的Redis输出网络流量（kbps）
+rejected_connections:0					# 因连接数达到maxclients上限后，被拒绝的连接个数
+sync_full:0					# 累计master full sync的次数；如果值比较大，说明常常出现全量复制，就得分析原因或调整repl-backlog-size
+sync_partial_ok:0		# 累计master psync成功的次数
+sync_partial_err:0	# 累计master psync失败的次数
+expired_keys:0			# 因过期而被自动删除的数据库键数量
+evicted_keys:0			# 因内存used_memory达到maxmemory后，每秒被驱逐的key个数
+keyspace_hits:1			# 查找键命中的次数
+keyspace_misses:0		# 查找键未命中的次数
+pubsub_channels:0		# 目前被订阅的频道数量
+pubsub_patterns:0		# 目前被订阅的模式数量
+latest_fork_usec:344			# 最近一次fork操作的耗时的微秒数（BGREWRITEAOF、BGSAVE、SYNC等都会触发fork）
+migrate_cached_sockets:0
+
+# Replication
+role:master	# 当前Redis的主从状态
+connected_slaves:0			# 下面有几个slave
+master_repl_offset:0		# master复制的偏移量
+repl_backlog_active:0							# 标识位，master是否开启了repl_backlog
+repl_backlog_size:1048576					# repl_backlog的长度，网络环境不稳定的，建议调整大些
+repl_backlog_first_byte_offset:0	# repl_backlog中首字节的复制偏移位
+repl_backlog_histlen:0	# repl_backlog当前使用的字节数
+
+# CPU
+used_cpu_sys:0.73						# Redis进程消耗的sys cpu
+used_cpu_user:0.25					# Redis进程消耗的user cpu
+used_cpu_sys_children:0.00	# 后台进程耗费的系统CPU
+used_cpu_user_children:0.00	# 后台进程耗费的用户CPU
+
+# Cluster
+cluster_enabled:0 # 是否开启集群模式
+
+# Keyspace
+db0:keys=12,expires=0,avg_ttl=0	# key的总数,过期的key的数量,平均key过期的时间
+```
+
+
+
+
 # 常见知识点
 
 ## 为什么要用redis而不用map做缓存?
