@@ -1,4 +1,9 @@
 # 常用命令
+- 查看运行参数帮助
+```shell
+docker run --help
+```
+
 - 查看当前哪些容器正在运行
 ```shell l
 supersu@supersu:~$ docker ps
@@ -95,6 +100,9 @@ docker run -d -p 8888:8080 jpress
 docker inspect 容器ID | grep IPAddress 
 ```
 
+- 查看容器在宿主机上的进程信息
+  - 方式一：`docker top 9b40a74ceb8`
+  - 方式二：`docker inspect demo -f '{{.State.Pid}}'`
 - 进入容器
 ```shell
 docker exec -it df3db18d4f64 bash
@@ -105,6 +113,14 @@ docker exec -it df3db18d4f64 bash
 exit
 ```
 
+- 宿主机与容器互相拷贝文件
+
+```shell
+# 从容器拷贝文件到宿主机
+docker cp mycontainer:/opt/testnew/file.txt /opt/test/
+# 从宿主机拷贝文件到容器
+docker cp /opt/test/file.txt mycontainer:/opt/testnew/
+```
 
 ## 安装Portainer
 
@@ -137,6 +153,12 @@ set global time_zone='+08:00';
 ...
 default-time_zone='+8:00'
 ...
+```
+
+## 安装Nginx
+
+```shell
+docker run -d -p 8080:80 --name sgc-nginx --restart always nginx:latest
 ```
 
 ## 安装Redis
@@ -199,7 +221,7 @@ docker build -t supersu/media-tomcat:v0.1 .
 docker run --name mediaServer -it -p 8089:8089 supersu/media-tomcat:v0.1 /bin/bash
 ```
 
-# 容器中安装Vim
+## 容器中安装Vim
 
 ```shell
 
@@ -213,4 +235,44 @@ mv /etc/apt/sources.list /etc/apt/sources.list.bak
     
 apt-get install -y vim
 ```
+
+## Docker搭建JRebel License Server
+
+```shell
+docker run -d --name jrebel-server -p 8888:8888 ilanyu/golang-reverseproxy
+```
+
+## Docker搭建Kafka开发环境
+
+### 制作docker-compose.yml文件
+
+```shell
+version: '2.1'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.103
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+```
+
+> 说明：`KAFKA_ADVERTISED_HOST_NAME` 需要配置为宿主机的ip
+
+### 运行
+
+```shell
+docker-compose up -d
+```
+
+### 参考资源
+
+- [使用Docker快速搭建Kafka开发环境](https://tomoyadeng.github.io/blog/2018/06/02/kafka-cluster-in-docker/index.html)
 
