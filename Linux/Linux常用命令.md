@@ -163,6 +163,28 @@ du -s * | sort -nr
 cat tcdutygrid.text | awk -F, '{print $1,$4,$5}' | sed 's/"//g' | awk -F" " '{print "INSERT INTO `46_kq_duty_grid`(`UnitID`, `DutyGridID`, `DutyGridName`, `DutyGridCode`) VALUES (9," $1",'\''"$2"'\'','\''"$3"'\'')"};'
 ```
 
+### Linux上传文件和下载文件命令行方式
+
+- **安装lrzsz工具**
+
+```shell
+yum install -y lrzsz
+```
+
+- 上传文件到Linux主机
+
+```shell
+rz
+```
+
+输入rz命令后，会弹出对话框，选择你要上传的文件，选择打开就上传到Linux主机。上传的文件在当前命令行的目录下
+
+- 下载Linux文件
+
+```shell
+sz 文件名
+```
+
 ## Shell内建命令
 
 ### 显示指定命令类型
