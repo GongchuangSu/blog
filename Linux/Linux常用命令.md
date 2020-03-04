@@ -1,3 +1,33 @@
+# 基本命令
+
+## 查看用户登陆历史记录
+
+```shell
+[root@localhost ~]# last -x
+root     pts/1        192.168.1.111    Wed Mar  4 08:05   still logged in
+root     pts/0        192.168.1.102    Wed Mar  4 08:03   still logged in
+```
+
+功能说明：列出目前与过去登入系统的用户相关信息。
+
+语 法：last [-adRx] [-f ] [-n ] [帐号名称…] [终端机编号…]
+
+参 数：
+
+- `a`：把从何处登入系统的主机名称或IP地址，显示在最后一行。
+
+- `d` ：将IP地址转换成主机名称。
+
+- `f` ：指定记录文件。
+
+- `n` ：或- 设置列出名单的显示列数。
+
+- `R` ：不显示登入系统的主机名称或IP地址。
+
+- `x` ：显示系统关机，重新开机，以及执行等级的改变等信息。
+
+# 问题排查常用命令
+
 ## 快速定位日志文件
 
 - 命令
@@ -165,7 +195,8 @@ cat tcdutygrid.text | awk -F, '{print $1,$4,$5}' | sed 's/"//g' | awk -F" " '{pr
 
 ### Linux上传文件和下载文件命令行方式
 
-- **安装lrzsz工具**
+#### 通过lrzsz工具
+- 安装lrzsz工具
 
 ```shell
 yum install -y lrzsz
@@ -183,6 +214,98 @@ rz
 
 ```shell
 sz 文件名
+```
+
+#### 通过ssh传输文件
+
+- 从服务器上下载文件到本地
+
+```shell
+scp username@servername:/path/filename /var/www/local_dir
+```
+
+- 上传本地文件到服务器
+
+```shell
+scp /path/filename username@servername:/path
+```
+
+- 从服务器下载整个目录
+
+```shell
+scp -r username@servername:/var/www/remote_dir/ /var/www/local_dir
+```
+
+- 上传目录到服务器
+
+```shell
+scp  -r local_dir username@servername:remote_dir
+```
+
+
+
+### 查看ip信息
+
+- 方式1：`ip addr`
+
+```shell
+[root@localhost ~]# ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: enp0s8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:1e:48:60 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.105/24 brd 192.168.1.255 scope global noprefixroute dynamic enp0s8
+       valid_lft 6740sec preferred_lft 6740sec
+    inet6 fe80::87c1:f32f:15fe:5832/64 scope link tentative dadfailed 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::4e36:23c4:2ef3:e3c8/64 scope link tentative dadfailed 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::ddfd:833:d9e2:c2c9/64 scope link tentative dadfailed 
+       valid_lft forever preferred_lft forever
+3: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 08:00:27:cd:93:f5 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global noprefixroute dynamic eth0
+       valid_lft 85941sec preferred_lft 85941sec
+    inet6 fe80::fee0:b94d:39cc:9373/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+```
+
+- 方式2：`ifconfig`（前提需安装net-tools）
+
+```shell
+[root@localhost ~]# ifconfig
+enp0s8: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.105  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 fe80::4e36:23c4:2ef3:e3c8  prefixlen 64  scopeid 0x20<link>
+        inet6 fe80::ddfd:833:d9e2:c2c9  prefixlen 64  scopeid 0x20<link>
+        inet6 fe80::87c1:f32f:15fe:5832  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:1e:48:60  txqueuelen 1000  (Ethernet)
+        RX packets 26511  bytes 16039667 (15.2 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 17627  bytes 1933807 (1.8 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.2.15  netmask 255.255.255.0  broadcast 10.0.2.255
+        inet6 fe80::fee0:b94d:39cc:9373  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:cd:93:f5  txqueuelen 1000  (Ethernet)
+        RX packets 16  bytes 3059 (2.9 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 28  bytes 3492 (3.4 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 68  bytes 5896 (5.7 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 68  bytes 5896 (5.7 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
 
 ## Shell内建命令
