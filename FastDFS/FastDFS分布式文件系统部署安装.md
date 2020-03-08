@@ -151,7 +151,7 @@ Fileid由上述部分拼接而成，然后将这个二进制串进行base64编�
 
 # FastDFS环境搭建
 
-##分布式部署架构图
+## 分布式部署架构图
 
 ![FastDFS架构图V2](assets/FastDFS架构图V2.png)
 
