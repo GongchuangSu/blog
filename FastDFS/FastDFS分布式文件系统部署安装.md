@@ -50,7 +50,7 @@ TrackerServer有以下两点重要作用：
 
 为了保证高可用，一个FastDFS集群当中可以有多个TrackerServer节点，由集群自动选举一个leader节点。
 
-###存储服务器（StorageServer）
+### 存储服务器（StorageServer）
 
 StorageServer是数据存储服务器，文件和描述信息(MetaData)都保存到存储服务器上。
 
