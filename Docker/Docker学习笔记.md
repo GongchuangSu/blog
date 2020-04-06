@@ -122,6 +122,27 @@ docker cp mycontainer:/opt/testnew/file.txt /opt/test/
 docker cp /opt/test/file.txt mycontainer:/opt/testnew/
 ```
 
+- 查看 docker 容器使用的资源
+
+```shell
+su@GongchuangSu:~|⇒  docker stats --no-stream
+CONTAINER ID        NAME                CPU %               MEM USAGE / LIMIT     MEM %               NET I/O             BLOCK I/O           PIDS
+59e0af0d3218        sgc-nginx           0.00%               2MiB / 3.855GiB       0.05%               19.8kB / 0B         7.43MB / 0B         2
+840d463e38b7        sgc-mysql-8.0       46.77%              1012MiB / 3.855GiB    25.65%              332MB / 613MB       2.17GB / 8.77GB     102
+92a56505f88e        sgc-redis           0.24%               69.77MiB / 3.855GiB   1.77%               23.8MB / 19.6MB     50.4MB / 7GB        3
+b7a6935c1d90        mediaServer         0.16%               336MiB / 3.855GiB     8.51%               243kB / 4.13MB      73.1MB / 4.1kB      49
+92789bf2fe13        portainer           0.00%               9.242MiB / 3.855GiB   0.23%               371kB / 11.9MB      19.6MB / 38.2MB     16
+```
+
+默认情况下，stats 命令会每隔 1 秒钟刷新一次输出的内容直到你按下 ctrl + c。下面是输出的主要内容：
+[CONTAINER]：以短格式显示容器的 ID。
+[CPU %]：CPU 的使用情况。
+[MEM USAGE / LIMIT]：当前使用的内存和最大可以使用的内存。
+[MEM %]：以百分比的形式显示内存使用情况。
+[NET I/O]：网络 I/O 数据。
+[BLOCK I/O]：磁盘 I/O 数据。
+[PIDS]：PID 号。
+
 ## 安装Portainer
 
 ```shell
