@@ -84,3 +84,69 @@ GATEWAY=192.168.1.1   # 网关或路由地址
 service network restart
 ```
 
+## 修改主机名
+
+```shell
+[root@fastdfs-200 ~]# hostnamectl set-hostname fastDFS-200
+# 需重启
+[root@fastdfs-200 ~]# hostnamectl status
+   Static hostname: fastdfs-200
+   Pretty hostname: fastDFS-200
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 42cbcdd91ee544bf8a9a61ecbc1f5f61
+           Boot ID: e606de4a3148428cbcfa3a6bf7749d74
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-862.el7.x86_64
+      Architecture: x86-64
+```
+
+##查看目录的树形结构
+
+```shell
+# 安装tree
+yum intall tree
+# 以树状图显示所有文件，子文件夹显示到第 N 层
+tree -L N
+```
+
+## SSH无密码登录
+
+比如服务器A与服务器B之间ssh需要无密码登陆，可按照以下步骤进行配置：
+
+- 在服务器A和B上生成各自的SSH密钥和公钥
+
+  ```ssh
+  # 一路Enter即可
+  # 生成的密钥和公钥保存在~/.ssh目录下
+  ssh-keygen -t rsa
+  ```
+
+- 将各自SSH公钥上传至对方服务器上
+
+  ```ssh
+  # 在服务器A上执行
+  ssh-copy-id root@服务器B用户名
+  # 在服务器B上执行
+  ssh-copy-id root@服务器A用户名
+  ```
+
+  > 输入远程用户的密码后，SSH公钥就会自动上传了。SSH公钥保存在远程Linux服务器的**.ssh/authorized_keys**文件中
+
+参考：[SSH无密码登录：只需两个简单步骤 (Linux)](https://www.linuxdashen.com/ssh-key%EF%BC%9A%E4%B8%A4%E4%B8%AA%E7%AE%80%E5%8D%95%E6%AD%A5%E9%AA%A4%E5%AE%9E%E7%8E%B0ssh%E6%97%A0%E5%AF%86%E7%A0%81%E7%99%BB%E5%BD%95)
+
+## 设置系统时间为中国时区并启用NTP同步
+
+```shell
+yum install ntp //安装ntp服务
+systemctl enable ntpd //开机启动服务
+systemctl start ntpd //启动服务
+timedatectl set-timezone Asia/Shanghai //更改时区
+timedatectl set-ntp yes //启用ntp同步
+ntpq -p //同步时间
+```
+
+参考资料：[CentOS 7 时间, 日期设置 (含时间同步）](https://www.cnblogs.com/tangxiaosheng/p/4986375.html)
+
