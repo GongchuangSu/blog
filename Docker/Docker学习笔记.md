@@ -185,8 +185,14 @@ docker run -d -p 8080:80 --name sgc-nginx --restart always nginx:latest
 ## 安装Redis
 
 ```shell
-docker run -d -p 6379:6379 -e TZ="Asia/Shanghai" --name sgc-redis --restart always  redis:3.2
+docker run -d --privileged=true -p 6379:6379 -e TZ="Asia/Shanghai" -v /Users/su/Documents/Docker/redis/data:/data --name sgc-redis --restart always redis:5.0.5 --requirepass "egovaredis"
 ```
+
+参数说明：
+
+- `--privileged=true`：容器内的root拥有真正root权限，否则容器内root只是外部普通用户权限
+- `-v /Users/su/Documents/Docker/redis/data:/data`：映射数据目录
+- `--requirepass`：设置密码
 
 ## 安装Cetus
 
