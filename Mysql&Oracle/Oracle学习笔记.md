@@ -173,3 +173,20 @@ begin
    end loop;
 end
 ```
+
+## 通过字段类型查询字段
+
+```sql
+SELECT b.column_name column_name --字段名
+      ,b.data_type data_type     --字段类型
+      ,b.data_length             --字段长度
+      ,a.comments comments       --字段注释
+      ,A.table_name table_name    --表名
+FROM user_col_comments a
+    ,all_tab_columns b
+WHERE a.table_name = b.table_name and
+    b.data_type = 'BLOB' 
+    group by b.column_name,b.data_type,b.DATA_LENGTH,a.comments,
+    a.table_name;
+```
+
