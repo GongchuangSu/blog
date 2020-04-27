@@ -17,7 +17,14 @@ java -javaagent:/Users/su/Documents/Skywalking/apache-skywalking-apm-bin/agent/s
 
 # 启动多媒体服务
 java -javaagent:/Users/su/Documents/Skywalking/apache-skywalking-apm-bin/agent/skywalking-agent.jar=agent.service_name=ServiceMedia -jar ./egova-service-media/target/egova-service-media-1.0.0.jar
+
+# 启动网关zuul服务
+
 ```
+
+## 配置文件
+- webapp/webapp.yml
+  - 端口server.port：18080（默认）
 
 ## 停止Skywalking服务脚本
 
@@ -37,6 +44,13 @@ if [ ${tpid} ]; then
     kill -15 $tpid
 fi
 ```
+
+# IDEA里的配置
+
+- 配置代理skywalking-agent.jar位置
+  - VM Option：`-javaagent:/Users/su/Documents/Skywalking/apache-skywalking-apm-bin/agent/skywalking-agent.jar`
+- 设置skywalking里应用名称
+  - Environment variables：`SW_AGENT_NAME=ServiceForm`
 
 # 参考资源
 

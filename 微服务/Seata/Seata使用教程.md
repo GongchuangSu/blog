@@ -289,6 +289,12 @@ Seata 通过代理数据源的方式实现分支事务，若没有配置，则�
       io.seata: DEBUG
   ```
 
+- SpringCloud xid无法传递
+
+  1.首先确保是否引入了`spring-cloud-alibaba-seata`的依赖.
+
+  2.如果xid还无法传递,请确认你是否实现了WebMvcConfigurer或WebMvcConfigurationSupport,如果是,请参考com.alibaba.cloud.seata.web.SeataHandlerInterceptorConfiguration#addInterceptors的方法.把SeataHandlerInterceptor加入到你的拦截链路中
+
 踩坑中......
 
 ## 引入Seata事务管理前后系统性能对比
