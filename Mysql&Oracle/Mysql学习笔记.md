@@ -53,7 +53,14 @@ and column_name not in (
 select lower(column_name) from information_schema.columns where table_schema = 'cgdb' and table_name = 'to_rec')
 ```
 
+## 查看指定字段类型信息
+
+```mysql
+select * from information_schema.columns where table_schema = 'cgdb0901' and column_type = 'geometry';
+```
+
 ## 递归查询
+
 ```sql
 select  unit_id, unit_name 
 from    (select * from tc_unit
@@ -238,3 +245,15 @@ possible_keys: idx_rec_task_num
 > Analyze Table <table_name><br>
 > Optimize Table <table_name> <br>
 > Optimize table 可能报错不可用，使用命令重启 service mysqld restart --skip-new
+
+# FAQ
+
+- 登陆数据库后，使用`use database`选择数据库很慢
+
+  可在登陆数据库时带上参数`-A`不进行预读，提高选择数据库速度
+
+  ```bash
+  mysql -uroot -p -A
+  ```
+
+  

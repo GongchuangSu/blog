@@ -3,6 +3,20 @@ show binary logs;
 show variables like '%log%';
 ```
 
+开启bin_log
+
+```shell
+#第一种方式
+#开启binlog日志
+log_bin=ON
+#binlog日志的基本文件名
+log_bin_basename=/var/lib/mysql/mysql-bin
+#binlog文件的索引文件，管理所有binlog文件
+log_bin_index=/var/lib/mysql/mysql-bin.index
+#第二种方式，等同于上面三行
+log-bin=/var/lib/mysql/mysql-bin
+```
+
 
 
 - mysqlbinlog
