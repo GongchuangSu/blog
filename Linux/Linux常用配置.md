@@ -150,3 +150,16 @@ ntpq -p //同步时间
 
 参考资料：[CentOS 7 时间, 日期设置 (含时间同步）](https://www.cnblogs.com/tangxiaosheng/p/4986375.html)
 
+## /etc/resolv.conf文件简析
+
+**/etc/resolv.conf**是**DNS客户机配置文件**，用于设置DNS服务器的IP地址及DNS域名，还包含了**主机的域名搜索顺序**。
+
+该文件是由**域名解析器**（resolver，一个根据主机名解析IP地址的库）使用的配置文件。它的格式很简单，每行以一个关键字开头，后接一个或多个由空格隔开的参数。
+
+```shell
+nameserver    //定义DNS服务器的IP地址
+domain       //定义本地域名
+search        //定义域名的搜索列表
+sortlist        //对返回的域名进行排序
+```
+

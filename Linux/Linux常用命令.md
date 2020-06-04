@@ -323,3 +323,9 @@ grep is /bin/grep
   - 命令类型：file-文件、内部命令；alias-命令别名；builtin-内部命令
   - `-a`：在环境变量“PATH”指定的路径中，显示给定指令的信息，包括命令别名。
 
+## Linux 查看磁盘空间
+
+```shell
+df -h
+```
+
