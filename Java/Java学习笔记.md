@@ -81,3 +81,28 @@ If `x` and `y` are of different types, the behavior of the two statements differ
 - 调度切换：每个进程都有独立代码和数据空间（程序上下文），进程间切换姚保存上下文，加载另一个进程，消耗资源较大；而线程则共享了进程的上下文环境，每个线程都有独立的运行栈和程序计数器PC，切换开销小
 - 通信方面：进程间相互独立，通信困难，常用方法：管道、信号、套接字、共享内存、消息队列等；线程间可以直接读写进程数据段（如全局变量）来进行通信——需要进程同步和互斥手段的辅助，以保证数据的一致性
 - 包含关系：进程是系统的一个应用程序，线程是进程的一个任务
+
+## Java集合
+
+### Hashtable/HashMap/CurrentHashMap
+
+- **[Why does Hashtable not take null key?](https://stackoverflow.com/questions/7556357/why-does-hashtable-not-take-null-key)**
+
+  From the `Hashtable` [JavaDoc](http://download.oracle.com/javase/6/docs/api/java/util/Hashtable.html):
+
+  ```java
+  To successfully store and retrieve objects from a hashtable, the objects used 
+  as keys must implement the hashCode method and the equals method.
+  ```
+
+  In a nutshell, since `null` isn't an object, you can't call `.equals()` or `.hashCode()` on it, so the `Hashtable` can't compute a hash to use it as a key.
+
+  [`HashMap`](http://download.oracle.com/javase/6/docs/api/java/util/HashMap.html) is newer, and has more advanced capabilities, which are basically just an improvement on the `Hashtable` functionality. As such, when `HashMap` was created, it was specifically designed to handle `null` values as keys and handles them as a special case.
+
+  Specifically, the use of `null` as a key is handled like this when issuing a `.get(key)`:
+
+  ```java
+  (key==null ? k==null : key.equals(k))
+  ```
+
+  
