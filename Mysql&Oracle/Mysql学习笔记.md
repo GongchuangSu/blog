@@ -59,6 +59,35 @@ select lower(column_name) from information_schema.columns where table_schema = '
 select * from information_schema.columns where table_schema = 'cgdb0901' and column_type = 'geometry';
 ```
 
+##将查询结果导出
+
+- 先配置导入导出限制
+
+  ```shell
+  show global variables like '%secure_file_priv%';
+  ```
+
+  `secure_file_priv`参数用于限制`LOAD DATA, SELECT …OUTFILE, LOAD_FILE()`传到哪个指定目录。
+
+  `secure_file_priv` 为 NULL 时，表示限制mysqld不允许导入或导出。
+  `secure_file_priv `为 /tmp 时，表示限制mysqld只能在/tmp目录中执行导入导出，其他目录不能执行。
+  `secure_file_priv` 没有值时，表示不限制mysqld在任意目录的导入导出
+
+  因为`secure_file_priv`参数是只读参数，不能通过`set gloal`命令修改，只能在文件my.cnf中进行配置
+
+  ```shell
+  secure_file_priv=''
+  ```
+
+- 重启服务，并使用以下查询语句进行导出
+
+  ```mysql
+  select concat(c.value_name, "&", b.value_name, ',', a.c_event_desc) as text
+  from szhcg_t_lh_um_event a left join szhcg_t_lh_um_event_code b on a.c_big_class_id = b.value_cd
+  left join szhcg_t_lh_um_event_code c on a.c_small_class_id = c.value_cd 
+  into outfile '/tmp/user.text';
+  ```
+
 ## 递归查询
 
 ```sql
