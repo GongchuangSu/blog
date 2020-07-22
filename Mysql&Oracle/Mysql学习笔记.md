@@ -88,6 +88,61 @@ select * from information_schema.columns where table_schema = 'cgdb0901' and col
   into outfile '/tmp/user.text';
   ```
 
+## 查看及设置事物隔离级别
+
+```mysql
+## 针对mysql8
+# 查看事物隔离级别
+select @@transaction_isolation;
+# 设置事物隔离级别
+SET GLOBAL transaction_isolation='READ-COMMITTED';
+```
+
+## 查看及设置事物是否自动提交
+
+```shell
+# 查看状态
+mysql> show variables like '%autocommit%';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| autocommit    | OFF   |
++---------------+-------+
+# 设置
+set session autocommit=0;
+```
+
+## processlist使用详解
+
+两种方式获取processlist信息
+
+```mysql
+# 第一种：使用show命令
+show processlist;
+# 第二种：查表
+select * from information_schema.processlist;
+```
+
+两种方法获取到的信息基本相同，都包括这些属性：`ID`/`USER`/`HOST`/`DB`/`COMMAND`/`TIME`/`STATE`/`INFO`
+
+具体值上稍有区别：`show processlist`的`Info`过长时会截取（100字符），且也不支持按属性过滤，不利于分析
+
+一般可使用第二种查表方式进行过滤查看。
+
+属性说明：
+
+- `ID`：ID不难理解，就是mysql连接的唯一标识。该标识用途有两个：
+  - 操作或过滤特定连接，比如使用`kill`命令时
+  - 定位问题连接。比如查看事务、锁等时，其中都会有一个`thread_id`，这个就是对应的`processlist.ID`；通过这个关系，在分析复杂问题时可定位到具体连接
+
+- `USER`：字面意思，创建数据库连接的用户。即可用于用户行为追踪，也可用于用户行为统计。
+- `HOST`：创建连接的服务器，一般由服务器IP+端口组成；实际使用中，往往只有IP部分有用，比如按请求来源进行统计，使用时可以截取：`substring(host, 1, instr(host, ":")-1)`。
+- `DB`：该连接执行SQL的数据库。
+- `COMMAND`：连接状态。该项值常见的有Sleep(休眠)、Query(查询)、Connect(连接)，其他值一般也不常用
+- `TIME`：连接的在当前状态(`STATE`)的持续时间，单位为秒。
+- `STATE`：SQL执行的状态，要结合`TIME`来使用，即持续的时间比较长，则有问题的概率越大。
+- `INFO`：正在执行的完整SQL语句
+
 ## 递归查询
 
 ```sql
@@ -264,7 +319,7 @@ possible_keys: idx_rec_task_num
 ## 查看已连接数
 > SHOW STATUS LIKE 'Threads_connected'; 
 
-## 查看innodb状态
+## 查看innodb状态（可查看最近一次死锁信息）
 > show engine innodb status
 
 ## 查询锁信息
