@@ -88,3 +88,60 @@ git stash show -p stash@{1}
 
 2. [Git 分支- 分支的衍合](https://git-scm.com/book/zh-tw/v1/Git-%E5%88%86%E6%94%AF-%E5%88%86%E6%94%AF%E7%9A%84%E8%A1%8D%E5%90%88)
 
+## git配置信息
+
+- 查看当前仓库配置
+
+  ```shell
+  git config -l --local
+  ```
+
+- 查看系统级别配置
+
+  ```shell
+  git config -l --system
+  ```
+
+- 查看用户级别配置
+
+  ```shell
+  git config -l --global
+  ```
+
+- 为不同项目设置不同的邮箱和用户名
+
+  ```shell
+  git config user.name "GongchuangSu"
+  git config user.email "sgc0515@gmail.com"
+  ```
+
+- 设置全局邮箱和用户名
+
+  ```shell
+  git config --global user.name "GongchuangSu"
+  git config --global user.email "sgc0515@gmail.com"
+  ```
+
+# Git常用命令
+
+## 首次上传本地仓库到github
+
+```shell
+# 在本地仓库下执行以下命令
+# 1. 初始化仓库
+git init
+# 2. 添加文件（添加文件前可先创建.gitignore文件排除不需要提交的文件）
+git add .
+# 3. 提交信息
+git comment -m "first commit"
+# 4. 添加远程主机地址
+git remote add origin https://github.com/GongchuangSu/redis-examples.git
+# 5. 拉取远程代码并合并
+git pull --rebase origin main
+# 6. 将本地更新推到远程
+git push -u origin main
+```
+
+# 参考链接
+
+- [Git远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
